@@ -1,0 +1,76 @@
+﻿@model BankApp.ViewModels.AccountViewModel
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Account: @Model.AccountId</h6>
+        <h6 class="m-0 font-weight-bold text-secondary">Balance: @Model.Balance</h6>
+    </div>
+
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>TransactionId</th>
+                        <th>Date</th>
+                        <th>Amount</th>
+                        <th>Balance</th>
+                        <th>Operation</th>
+                        <th>Symbol</th>
+                        <th>Bank</th>
+                        <th>Type</th>
+                        <th>Account</th>
+
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var transaction in Model.Transactions)
+                    {
+                        <tr>
+                            <td>@transaction.TransactionId</td>
+                            <td>@transaction.Date</td>
+                            <td>@transaction.Amount</td>
+                            <td>@transaction.Balance</td>
+                            <td>@transaction.Operation</td>
+                            <td>@transaction.Symbol</td>
+                            <td>@transaction.Bank</td>
+                            <td>@transaction.Type</td>
+                            <td>@transaction.Account</td>
+
+
+
+                        </tr>
+
+                    }
+                   
+
+                </tbody>
+            </table>
+            <a class="btn btn-primary" href="#" onclick="fetch20more(@Model.AccountId); return false;">Load 20 more</a>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts
+{
+    <script>
+        var skip = 0;
+        function fetch20more(accountId) {
+            //$("#players").append('<li>En till</li>');
+            skip = skip + 20;
+            //$("#players").append('<li>' + skip + '</li>');
+            $.ajax({
+                url: "/Account/LoadMoreTransactions?id=" + accountId + "&skip=" + skip, success: function (result) {
+                    $("#dataTable").append(result);
+                }
+            });
+        }
+    </script>
+}

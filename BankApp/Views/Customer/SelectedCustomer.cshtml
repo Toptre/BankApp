@@ -1,0 +1,172 @@
+﻿@model BankApp.ViewModels.CustomerViewModel
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{ if (Model.NotFound)
+    {
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+            <!-- 404 Error Text -->
+            <div class="text-center">
+                <div class="error mx-auto" data-text="Customer not found">Customer not found</div>
+                <p class="lead text-gray-800 mb-5">Customer not found</p>
+                <p class="text-gray-500 mb-0">Try again!</p>
+               
+            </div>
+
+        </div>
+    }
+    else
+    {
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Costumer</h6>
+            </div>
+            <div class="card-body">
+                <div class="row no-gutters">
+                    <div class="col-md-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            Costumer Id:
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.CustomerId</div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            Givenname:
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.Givenname</div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            Surname:
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.Surname</div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            NationalId:
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.NationalId</div>
+                    </div>
+                </div>
+                <div class="row no-gutters">
+                    <div class="col-md-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            Gender:
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.Gender</div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            Streetaddress:
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.Streetaddress</div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            City:
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.City</div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            Zipcode:
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.Zipcode</div>
+                    </div>
+                </div>
+                <div class="row no-gutters">
+
+                    <div class="col-md-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            Country:
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.Country</div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            CountryCode:
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.CountryCode</div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            Birthday:
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.Birthday</div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            Emailaddress:
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.Emailaddress</div>
+                    </div>
+                </div>
+                <div class="row no-gutters">
+                    <div class="col-md-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            Telephonecountrycode:
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.Telephonecountrycode</div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            Telephonenumber:
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.Telephonenumber</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Accounts</h6>
+            </div>
+
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>AccNo</th>
+                                <th>Freq</th>
+                                <th>Balance</th>
+                                <th>Created</th>
+                                <th>Total Balance</th>
+
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var account in Model.Accounts)
+                            {
+                                <tr role="button" onclick="location.href = '@Url.Action("Index", "Account", new { id=account.AccountId })'">
+                                    <td>@account.AccountId</td>
+                                    <td>@account.Frequency</td>
+                                    <td>@account.Balance</td>
+                                    <td>@account.Created</td>
+
+
+                                </tr>
+
+                            }
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>@Model.SumOfCustomerAccounts</td>
+
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+
+}
+
