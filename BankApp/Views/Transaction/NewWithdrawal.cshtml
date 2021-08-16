@@ -1,0 +1,44 @@
+﻿@model BankApp.ViewModels.NewWithdrawalViewModel
+
+@{
+    ViewData["Title"] = "New Withdrawal";
+}
+
+<section class="py-5">
+    <div class="row">
+        <div class="col-lg-12 mb-5">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="h6 text-uppercase mb-0">New Deposit</h3>
+                </div>
+
+                <div class="card-body">
+                    <form asp-action="NewWithdrawal" asp-controller="Transaction" method="post">
+                        <div class="form-group">
+                            <label asp-for="AccountId">Account number: </label>
+                            <input class="form-control" asp-for="AccountId">
+                            <span asp-validation-for="AccountId" class="field-validation-error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Amount">Amount: </label>
+                            <input class="form-control" asp-for="Amount">
+                            <span asp-validation-for="Amount" class="field-validation-error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Type">Type: </label>
+                            <input class="form-control" value="Credit" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Operation">Operation: </label>
+                            <input class="form-control" value="Credit in Cash" readonly="readonly" asp-for="Operation">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Deposit</button>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</section>

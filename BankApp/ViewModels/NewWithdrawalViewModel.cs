@@ -1,21 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace BankApp.ViewModels
 {
-    public class NewDepositViewModel
+    public class NewWithdrawalViewModel
     {
         public int TransactionId { get; set; }
-        
         public int AccountId { get; set; }
         public DateTime Date { get; set; }
-        public string Type { get; } = "Credit";
-        public string Operation { get; } = "Credit in Cash";
-
-
+        public string Type { get; } = "Debit";
+        public string Operation { get; } = "Withdrawal in Cash";
         public decimal Amount { get; set; }
         public decimal Balance { get; set; }
         public string Symbol { get; set; }
@@ -23,3 +19,4 @@ namespace BankApp.ViewModels
         public string Account { get; set; }
     }
 }
+

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BankApp.Data;
+using BankApp.Services;
 using BankApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,7 +11,11 @@ namespace BankApp.Controllers
 {
     public class TransactionController : BaseController
     {
-        public TransactionController ()
+        protected readonly ITransactionRepository _transactions;
+        public TransactionController(ITransactionRepository transactions, IAccountRepository accounts):base(accounts)
+        {
+           _transactions=transactions;
+        }
         public IActionResult Index()
         {
             return View();
@@ -19,35 +24,47 @@ namespace BankApp.Controllers
         public IActionResult NewDeposit()
         {
             var viewModel = new NewDepositViewModel();
-            viewModel.Type = "Credit";
-            viewModel.Operation = "Credit in Cash";
-
+            
             return View(viewModel);
         }
 
         [HttpPost]
-        public IActionResult NewDeposit(NewDepositViewModel model)
+        public IActionResult NewDeposit(NewDepositViewModel viewModel)
         {
+            var dbAcc = _accounts.GetAllAccounts().FirstOrDefault(r => r.AccountId == viewModel.AccountId);
+
+            if (dbAcc == null)
+            {
+                ModelState.AddModelError("AccountId", "Unknown Account number");
+            }
+
+            if (viewModel.Amount < 0)
+            {
+                ModelState.AddModelError("Amount", "Not possible to deposit a negative amount");
+            }
+
+
 
             if (ModelState.IsValid)
             {
                 var dbTrans = new Transaction();
-                _transaction.AddTrans(dbTrans);
+                _transactions.AddTransaction(dbTrans);
                 dbTrans.AccountId = viewModel.AccountId;
                 dbTrans.Date = DateTime.Now;
-                dbTrans.Type = "Credit";
-                dbTrans.Operation = "Credit in Cash";
+                dbTrans.Type = viewModel.Type;
+                dbTrans.Operation = viewModel.Operation;
                 dbTrans.Amount = viewModel.Amount;
 
 
-                var dbAcc = _account.GetAllAccount().First(r => r.AccountId == viewModel.AccountId);
+                
                 var balance = dbAcc.Balance + viewModel.Amount;
 
                 dbTrans.Balance = balance;
                 dbAcc.Balance = balance;
 
-                _transaction.Save();
-                return RedirectToAction("New");
+                _transactions.Save();
+
+                return RedirectToAction("NewDeposit");
 
 
             }
@@ -55,7 +72,57 @@ namespace BankApp.Controllers
             return View();
         }
 
+        public IActionResult NewWithdrawal()
+        {
+            var viewModel = new NewWithdrawalViewModel();
 
-        
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public IActionResult NewWithdrawal(NewWithdrawalViewModel viewModel)
+        {
+            var dbAcc = _accounts.GetAllAccounts().FirstOrDefault(r => r.AccountId == viewModel.AccountId);
+
+            if (dbAcc == null)
+            {
+                ModelState.AddModelError("AccountId", "Unkown Account number");
+            }
+
+            if (viewModel.Amount < 0)
+            {
+                ModelState.AddModelError("Amount", "Not possible to deposit a negative amount");
+            }
+
+            if (true)
+            {
+
+            }
+
+
+            if (ModelState.IsValid)
+            {
+                var dbTrans = new Transaction();
+                _transactions.AddTransaction(dbTrans);
+                dbTrans.AccountId = viewModel.AccountId;
+                dbTrans.Date = DateTime.Now;
+                dbTrans.Type = viewModel.Type;
+                dbTrans.Operation = viewModel.Operation;
+                dbTrans.Amount = decimal.Negate(viewModel.Amount);
+
+
+                var balance = dbAcc.Balance - viewModel.Amount;
+
+                dbTrans.Balance = balance;
+                dbAcc.Balance = balance;
+
+                _transactions.Save();
+
+                return RedirectToAction("NewWithdrawal");
+            }
+
+            return View();
+
+        }
     }
 }
